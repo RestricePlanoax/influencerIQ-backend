@@ -2,7 +2,7 @@
 
 import express from 'express';
 import cors from 'cors';
-import config from './config.js';
+import config from '../config.js';
 
 // 1) Create Express app
 const app = express();
@@ -15,19 +15,19 @@ app.get('/healthz', (req, res) => {
 });
 
 // 3) Mount existing routers (assuming these exist and export a default router)
-import creatorsRouter from './routes/creators.js';
-import outreachRouter from './routes/outreach.js';
-import negotiationsRouter from './routes/negotiations.js';
-import contractsRouter from './routes/contracts.js';
-import financeRouter from './routes/finance.js';
-import trackingRouter from './routes/tracking.js';
-import insightsRouter from './routes/insights.js';
+import creatorsRouter from '../routes/creators.js';
+import outreachRouter from '../routes/outreach.js';
+import negotiationsRouter from '../routes/negotiations.js';
+import contractsRouter from '../routes/contracts.js';
+import financeRouter from '../routes/finance.js';
+import trackingRouter from '../routes/tracking.js';
+import insightsRouter from '../routes/insights.js';
 
-import langRouter from './routes/lang.js';
+import langRouter from '../routes/lang.js';
 
 // ← Correctly import the default export from metricsConfig.js (no braces)
-import metricsRoutes from './routes/metricsConfig.js';
-import aiInsightsRouter from './routes/aiInsights.js';
+import metricsRoutes from '../routes/metricsConfig.js';
+import aiInsightsRouter from '../routes/aiInsights.js';
 
 // Mount paths
 app.use('/api/v1/creators', creatorsRouter);
@@ -45,12 +45,12 @@ app.use('/api/v1/metrics', metricsRoutes);
 app.use('/api/v1/ai-insights', aiInsightsRouter);
 
 // 4) If run directly (node index.js), start listening
-if (process.argv[1].endsWith('index.js')) {
-  const PORT = config.port || 5000;
-  app.listen(PORT, () => {
-    console.log(`🚀 InfluencerFlow backend listening on port ${PORT}`);
-  });
-}
+// if (process.argv[1].endsWith('index.js')) {
+//   const PORT = config.port || 5000;
+//   app.listen(PORT, () => {
+//     console.log(`🚀 InfluencerFlow backend listening on port ${PORT}`);
+//   });
+// }
 
 // 5) Export `app` for testing
 export default app;

@@ -14,21 +14,21 @@ app.get("/", (req, res) => res.send("Express on Vercel"));
 app.get('/healthz', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
-
+routes/creators.js
 // 3) Mount existing routers (assuming these exist and export a default router)
-import creatorsRouter from '../routes/creators.js';
-import outreachRouter from '../routes/outreach.js';
-import negotiationsRouter from '../routes/negotiations.js';
-import contractsRouter from '../routes/contracts.js';
-import financeRouter from '../routes/finance.js';
-import trackingRouter from '../routes/tracking.js';
-import insightsRouter from '../routes/insights.js';
+import creatorsRouter from './routes/creators.js'
+import outreachRouter from './routes/outreach.js';
+import negotiationsRouter from './routes/negotiations.js';
+import contractsRouter from './routes/contracts.js';
+import financeRouter from './routes/finance.js';
+import trackingRouter from './routes/tracking.js';
+import insightsRouter from './routes/insights.js';
 
-import langRouter from '../routes/lang.js';
+import langRouter from './routes/lang.js';
 
 // ← Correctly import the default export from metricsConfig.js (no braces)
-import metricsRoutes from '../routes/metricsConfig.js';
-import aiInsightsRouter from '../routes/aiInsights.js';
+import metricsRoutes from './routes/metricsConfig.js';
+import aiInsightsRouter from './routes/aiInsights.js';
 
 // Mount paths
 app.use('/v1/creators', creatorsRouter);

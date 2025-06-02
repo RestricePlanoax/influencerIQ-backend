@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // 2) Health check
+app.get("/", (req, res) => res.send("Express on Vercel"));
 app.get('/healthz', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
@@ -44,13 +45,13 @@ app.use('/api/v1/lang', langRouter);
 app.use('/v1/metrics', metricsRoutes);
 app.use('/v1/ai-insights', aiInsightsRouter);
 
-// 4) If run directly (node index.js), start listening
 // if (process.argv[1].endsWith('index.js')) {
 //   const PORT = config.port || 5000;
 //   app.listen(PORT, () => {
 //     console.log(`🚀 InfluencerFlow backend listening on port ${PORT}`);
 //   });
-// }
+//}
+app.listen(3000, () => console.log("Server ready on port 3000."));
 
 // 5) Export `app` for testing
 export default app;

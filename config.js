@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-  port: process.env.PORT || 3000,
+  // port: process.env.PORT || 3000,
 
   // ---- OpenAI ----
   openaiApiKey: process.env.OPENAI_API_KEY || null,

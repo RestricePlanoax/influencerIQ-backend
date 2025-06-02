@@ -2,7 +2,7 @@
 
 import express from 'express';
 import cors from 'cors';
-import config from '../config.js';
+import config from './config.js';
 
 // 1) Create Express app
 const app = express();

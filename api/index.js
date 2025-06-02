@@ -51,7 +51,7 @@ app.use('/v1/ai-insights', aiInsightsRouter);
 //     console.log(`🚀 InfluencerFlow backend listening on port ${PORT}`);
 //   });
 //}
-app.listen(3000, () => console.log("Server ready on port 3000."));
+//app.listen(3000, () => console.log("Server ready on port 3000."));
 
 // 5) Export `app` for testing
 module.exports = app;

@@ -30,19 +30,19 @@ import metricsRoutes from '../routes/metricsConfig.js';
 import aiInsightsRouter from '../routes/aiInsights.js';
 
 // Mount paths
-app.use('/api/v1/creators', creatorsRouter);
-app.use('/api/v1/outreach', outreachRouter);
-app.use('/api/v1/negotiations', negotiationsRouter);
-app.use('/api/v1/contracts', contractsRouter);
-app.use('/api/v1/finance', financeRouter);
-app.use('/api/v1/campaigns', trackingRouter);
-app.use('/api/v1/insights', insightsRouter);
+app.use('/v1/creators', creatorsRouter);
+app.use('/v1/outreach', outreachRouter);
+app.use('/v1/negotiations', negotiationsRouter);
+app.use('/v1/contracts', contractsRouter);
+app.use('/v1/finance', financeRouter);
+app.use('/v1/campaigns', trackingRouter);
+app.use('/v1/insights', insightsRouter);
 app.use('/api/v1/lang', langRouter);
 
 
 // ← Mount the new metrics routes under /api/v1/metrics
-app.use('/api/v1/metrics', metricsRoutes);
-app.use('/api/v1/ai-insights', aiInsightsRouter);
+app.use('/v1/metrics', metricsRoutes);
+app.use('/v1/ai-insights', aiInsightsRouter);
 
 // 4) If run directly (node index.js), start listening
 // if (process.argv[1].endsWith('index.js')) {

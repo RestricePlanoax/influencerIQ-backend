@@ -1,4 +1,3 @@
-// routes/creators.js
 
 /**
  * CreatorScoutAgent
@@ -7,7 +6,7 @@
  */
 
 import express from 'express';
-import config from '../config.js';
+//import config from '../config.js';
 import { getCreatorsFromStub, getCreatorByIdStub,mockCreators } from '../services/stubData.js';
 import { computeFitScore } from '../utils/formatHelpers.js';
 import { generateText } from '../services/openaiClient.js';

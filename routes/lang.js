@@ -7,7 +7,7 @@
  */
 
 import express from 'express';
-import config from '../config.js';
+// import config from '../config.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -33,25 +33,25 @@ router.post('/translate', async (req, res) => {
     return res.json({ translatedText: sourceText, confidence: 1.0 });
   }
 
-  if (config.useRealApis && config.deeplApiKey) {
-    try {
-      const resp = await axios.post(
-        'https://api-free.deepl.com/v2/translate',
-        new URLSearchParams({
-          auth_key: config.deeplApiKey,
-          text: sourceText,
-          source_lang: sourceLang.toUpperCase(),
-          target_lang: targetLang.toUpperCase(),
-        })
-      );
-      const translatedText = resp.data.translations[0].text;
-      const confidence = 0.9; // DeepL doesn’t return a confidence, so assume 0.9
-      return res.json({ translatedText, confidence });
-    } catch (err) {
-      console.error('DeepL API error:', err.response?.data || err.message);
-      // Fallback below
-    }
-  }
+  // if (config.useRealApis && config.deeplApiKey) {
+  //   try {
+  //     const resp = await axios.post(
+  //       'https://api-free.deepl.com/v2/translate',
+  //       new URLSearchParams({
+  //         auth_key: config.deeplApiKey,
+  //         text: sourceText,
+  //         source_lang: sourceLang.toUpperCase(),
+  //         target_lang: targetLang.toUpperCase(),
+  //       })
+  //     );
+  //     const translatedText = resp.data.translations[0].text;
+  //     const confidence = 0.9; // DeepL doesn’t return a confidence, so assume 0.9
+  //     return res.json({ translatedText, confidence });
+  //   } catch (err) {
+  //     console.error('DeepL API error:', err.response?.data || err.message);
+  //     // Fallback below
+  //   }
+  // }
 
   // Stub: reverse the text
   const fake = sourceText.split('').reverse().join('');

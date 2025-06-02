@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authenticate } = require('./auth');
-import config from '../config.js'; // <- import our central config
+//import config from '../config.js'; // <- import our central config
 const {mockCampaigns}  = require('../services/stubData.js')
 let campaignIdCounter = 1;
 

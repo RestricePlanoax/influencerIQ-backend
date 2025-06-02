@@ -8,7 +8,7 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import config from '../config.js';
+//import config from '../config.js';
 import {
   createNegotiationStub,
   getNegotiationByIdStub,
@@ -60,69 +60,69 @@ router.post('/', async (req, res) => {
   createNegotiationStub(negotiation);
 
   // === If USE_REAL_APIS ===
-  if (config.useRealApis && config.openaiApiKey) {
-    // Build a GPT prompt for a polite counter-offer
-    const prompt = `
-Creator (ID: ${creatorId}) requests $${initialOffer.amount} ${initialOffer.currency} 
-for deliverables: ${initialOffer.deliverables.join(', ')}.
-Our budget is $${brandBudget.min}–$${brandBudget.max} ${brandBudget.currency}.
-Campaign brief: "${campaignBrief}".
-Provide a polite counter-offer in JSON format:
-{"amount": <number>, "currency": "${brandBudget.currency}", "messageText": "<full counter text>"}
-    `;
+//   if (config.useRealApis && config.openaiApiKey) {
+//     // Build a GPT prompt for a polite counter-offer
+//     const prompt = `
+// Creator (ID: ${creatorId}) requests $${initialOffer.amount} ${initialOffer.currency} 
+// for deliverables: ${initialOffer.deliverables.join(', ')}.
+// Our budget is $${brandBudget.min}–$${brandBudget.max} ${brandBudget.currency}.
+// Campaign brief: "${campaignBrief}".
+// Provide a polite counter-offer in JSON format:
+// {"amount": <number>, "currency": "${brandBudget.currency}", "messageText": "<full counter text>"}
+//     `;
 
-    try {
-      const { text: agentOutput } = await generateText(prompt, {
-        model: 'gpt-3.5-turbo',
-        max_tokens: 256,
-        temperature: 0.6,
-      });
+//     try {
+//       const { text: agentOutput } = await generateText(prompt, {
+//         model: 'gpt-3.5-turbo',
+//         max_tokens: 256,
+//         temperature: 0.6,
+//       });
 
-      // Attempt to parse as JSON
-      let parsed = {};
-      try {
-        parsed = JSON.parse(agentOutput);
-        if (!parsed.amount || !parsed.messageText) throw new Error('Invalid JSON');
-      } catch {
-        // Fallback if parsing fails: pick brandBudget.max
-        parsed = {
-          amount: brandBudget.max,
-          currency: brandBudget.currency,
-          messageText: `We can offer ${brandBudget.max} ${brandBudget.currency} for these deliverables.`,
-        };
-      }
+//       // Attempt to parse as JSON
+//       let parsed = {};
+//       try {
+//         parsed = JSON.parse(agentOutput);
+//         if (!parsed.amount || !parsed.messageText) throw new Error('Invalid JSON');
+//       } catch {
+//         // Fallback if parsing fails: pick brandBudget.max
+//         parsed = {
+//           amount: brandBudget.max,
+//           currency: brandBudget.currency,
+//           messageText: `We can offer ${brandBudget.max} ${brandBudget.currency} for these deliverables.`,
+//         };
+//       }
 
-      negotiation.thread.push({
-        sender: 'agent',
-        amount: parsed.amount,
-        currency: parsed.currency,
-        deliverables: initialOffer.deliverables,
-        messageText: parsed.messageText,
-        timestamp: new Date().toISOString(),
-      });
-      negotiation.status = 'counter_sent';
-      negotiation.lastUpdated = new Date().toISOString();
-      updateNegotiationStub(negotiationId, negotiation);
+//       negotiation.thread.push({
+//         sender: 'agent',
+//         amount: parsed.amount,
+//         currency: parsed.currency,
+//         deliverables: initialOffer.deliverables,
+//         messageText: parsed.messageText,
+//         timestamp: new Date().toISOString(),
+//       });
+//       negotiation.status = 'counter_sent';
+//       negotiation.lastUpdated = new Date().toISOString();
+//       updateNegotiationStub(negotiationId, negotiation);
 
-      return res.status(201).json(negotiation);
-    } catch (err) {
-      console.error('NegotiationAgent GPT error:', err);
-      // Fallback stub
-      negotiation.thread.push({
-        sender: 'agent',
-        amount: brandBudget.max,
-        currency: brandBudget.currency,
-        deliverables: initialOffer.deliverables,
-        messageText: `We can offer ${brandBudget.max} ${brandBudget.currency} for these deliverables.`,
-        timestamp: new Date().toISOString(),
-      });
-      negotiation.status = 'counter_sent';
-      negotiation.lastUpdated = new Date().toISOString();
-      updateNegotiationStub(negotiationId, negotiation);
+//       return res.status(201).json(negotiation);
+//     } catch (err) {
+//       console.error('NegotiationAgent GPT error:', err);
+//       // Fallback stub
+//       negotiation.thread.push({
+//         sender: 'agent',
+//         amount: brandBudget.max,
+//         currency: brandBudget.currency,
+//         deliverables: initialOffer.deliverables,
+//         messageText: `We can offer ${brandBudget.max} ${brandBudget.currency} for these deliverables.`,
+//         timestamp: new Date().toISOString(),
+//       });
+//       negotiation.status = 'counter_sent';
+//       negotiation.lastUpdated = new Date().toISOString();
+//       updateNegotiationStub(negotiationId, negotiation);
 
-      return res.status(201).json(negotiation);
-    }
-  }
+//       return res.status(201).json(negotiation);
+//     }
+//   }
 
   // === Stub Mode ===
   negotiation.thread.push({

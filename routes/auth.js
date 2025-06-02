@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { users } = require('../mockData');
-import config from '../config.js'; // <- import our central config
+//import config from '../config.js'; // <- import our central config
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;

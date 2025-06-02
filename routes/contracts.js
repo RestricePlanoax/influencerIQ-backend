@@ -9,7 +9,7 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import config from '../config.js';
+//import config from '../config.js';
 import { generateText } from '../services/openaiClient.js';
 import {
   createContractStub,
@@ -44,78 +44,78 @@ router.post('/draft', async (req, res) => {
   const createdAt = new Date().toISOString();
 
   // === If USE_REAL_APIS ===
-  if (config.useRealApis && config.openaiApiKey) {
-    // Build a GPT prompt to fill in a contract template
-    const prompt = `
-Fill in this influencer contract template with the provided variables. 
-Provide a full, legally-sounding contract in plain English.
+//   if (config.useRealApis && config.openaiApiKey) {
+//     // Build a GPT prompt to fill in a contract template
+//     const prompt = `
+// Fill in this influencer contract template with the provided variables. 
+// Provide a full, legally-sounding contract in plain English.
 
-Template:
-"""
-INFLUENCER SPONSORSHIP AGREEMENT
+// Template:
+// """
+// INFLUENCER SPONSORSHIP AGREEMENT
 
-This Sponsorship Agreement (“Agreement”) is made on {{DATE}} between {{BRAND_NAME}} (Brand) and {{CREATOR_NAME}} (Creator).
-1. Deliverables: {{DELIVERABLES}}.
-2. Compensation: {{CURRENCY}} {{AMOUNT}}, to be paid in two installments.
-3. Campaign Period: from {{START_DATE}} to {{END_DATE}}.
-4. Additional Clauses: {{CLAUSES}}.
-5. Use of Content: Creator grants Brand a worldwide, royalty-free license for one year.
-6. Confidentiality: Both parties agree to keep campaign details confidential.
-7. Governing Law: This Agreement will be governed by [Jurisdiction].
-8. Termination: Either party may terminate for material breach.
-"""
+// This Sponsorship Agreement (“Agreement”) is made on {{DATE}} between {{BRAND_NAME}} (Brand) and {{CREATOR_NAME}} (Creator).
+// 1. Deliverables: {{DELIVERABLES}}.
+// 2. Compensation: {{CURRENCY}} {{AMOUNT}}, to be paid in two installments.
+// 3. Campaign Period: from {{START_DATE}} to {{END_DATE}}.
+// 4. Additional Clauses: {{CLAUSES}}.
+// 5. Use of Content: Creator grants Brand a worldwide, royalty-free license for one year.
+// 6. Confidentiality: Both parties agree to keep campaign details confidential.
+// 7. Governing Law: This Agreement will be governed by [Jurisdiction].
+// 8. Termination: Either party may terminate for material breach.
+// """
 
-Variables:
-{
-  "DATE": "${new Date().toLocaleDateString()}",
-  "BRAND_NAME": "${brandId}",
-  "CREATOR_NAME": "${creatorId}",
-  "DELIVERABLES": "${finalOffer.deliverables.join(', ')}",
-  "CURRENCY": "${finalOffer.currency}",
-  "AMOUNT": "${finalOffer.amount}",
-  "START_DATE": "${campaignDates.start}",
-  "END_DATE": "${campaignDates.end}",
-  "CLAUSES": "${additionalClauses.join('; ')}"
-}
-    `;
+// Variables:
+// {
+//   "DATE": "${new Date().toLocaleDateString()}",
+//   "BRAND_NAME": "${brandId}",
+//   "CREATOR_NAME": "${creatorId}",
+//   "DELIVERABLES": "${finalOffer.deliverables.join(', ')}",
+//   "CURRENCY": "${finalOffer.currency}",
+//   "AMOUNT": "${finalOffer.amount}",
+//   "START_DATE": "${campaignDates.start}",
+//   "END_DATE": "${campaignDates.end}",
+//   "CLAUSES": "${additionalClauses.join('; ')}"
+// }
+//     `;
 
-    try {
-      const { text: contractText } = await generateText(prompt, {
-        model: 'gpt-3.5-turbo',
-        max_tokens: 1024,
-        temperature: 0.3,
-      });
+//     try {
+//       const { text: contractText } = await generateText(prompt, {
+//         model: 'gpt-3.5-turbo',
+//         max_tokens: 1024,
+//         temperature: 0.3,
+//       });
 
-      // In production: convert `contractText` → PDF (e.g. via Puppeteer), upload to S3, get a real URL.
-      // Here we stub the PDF URL.
-      const draftPdfUrl = `https://example.com/contracts/${contractId}/draft.pdf`;
+//       // In production: convert `contractText` → PDF (e.g. via Puppeteer), upload to S3, get a real URL.
+//       // Here we stub the PDF URL.
+//       const draftPdfUrl = `https://example.com/contracts/${contractId}/draft.pdf`;
 
-      const contract = {
-        contractId,
-        negotiationId,
-        creatorId,
-        brandId,
-        amount: finalOffer.amount,
-        currency: finalOffer.currency,
-        deliverables: finalOffer.deliverables,
-        campaignDates,
-        additionalClauses,
-        contractText,
-        draftPdfUrl,
-        finalPdfUrl: null,
-        status: 'pending_signature',
-        esignRequestId: null,
-        createdAt,
-        updatedAt: new Date().toISOString(),
-        signedAt: null,
-      };
-      createContractStub(contract);
-      return res.status(200).json(contract);
-    } catch (err) {
-      console.error('ContractAgent GPT error:', err);
-      // Fallback stub text
-    }
-  }
+//       const contract = {
+//         contractId,
+//         negotiationId,
+//         creatorId,
+//         brandId,
+//         amount: finalOffer.amount,
+//         currency: finalOffer.currency,
+//         deliverables: finalOffer.deliverables,
+//         campaignDates,
+//         additionalClauses,
+//         contractText,
+//         draftPdfUrl,
+//         finalPdfUrl: null,
+//         status: 'pending_signature',
+//         esignRequestId: null,
+//         createdAt,
+//         updatedAt: new Date().toISOString(),
+//         signedAt: null,
+//       };
+//       createContractStub(contract);
+//       return res.status(200).json(contract);
+//     } catch (err) {
+//       console.error('ContractAgent GPT error:', err);
+//       // Fallback stub text
+//     }
+//   }
 
   // === Stub Mode ===
   const stubText = `

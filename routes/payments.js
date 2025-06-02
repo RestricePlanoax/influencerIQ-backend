@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import config from '../config.js'; // <- import our central config
+//import config from '../config.js'; // <- import our central config
 
 const { authenticate } = require('./auth');
 const { campaigns, payments } = require('../mockData');

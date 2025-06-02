@@ -8,7 +8,7 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import config from '../config.js';
+//import config from '../config.js';
 import {
   getMetricsForDeliverableStub,
   getDeliverablesForCampaignStub,
@@ -68,54 +68,54 @@ router.get('/:campaignId/summary', async (req, res) => {
   // 5) GPT summary + recommendations
   let summaryText = '';
   let recommendations = [];
-  if (config.useRealApis && config.openaiApiKey) {
-    const prompt = `
-Here are aggregated metrics for Campaign ${campaignId} from ${sinceDate || 'start'} to ${
-      untilDate || 'now'
-    }:
-• Total Spend: $${totalSpend}
-• Total Impressions (views): ${totalViews}
-• Total Engagements: ${totalEngagements}
+//   if (config.useRealApis && config.openaiApiKey) {
+//     const prompt = `
+// Here are aggregated metrics for Campaign ${campaignId} from ${sinceDate || 'start'} to ${
+//       untilDate || 'now'
+//     }:
+// • Total Spend: $${totalSpend}
+// • Total Impressions (views): ${totalViews}
+// • Total Engagements: ${totalEngagements}
 
-Top Performers:
-${topPerformers.map((t) => `• ${t.creatorId}: ER=${t.engagementRate}, Earnings=$${t.earnings}`).join('\n')}
+// Top Performers:
+// ${topPerformers.map((t) => `• ${t.creatorId}: ER=${t.engagementRate}, Earnings=$${t.earnings}`).join('\n')}
 
-Underperformers:
-${underperformers
-  .map((u) => `• ${u.creatorId}: ER=${u.engagementRate}, Earnings=$${u.earnings}`)
-  .join('\n')}
+// Underperformers:
+// ${underperformers
+//   .map((u) => `• ${u.creatorId}: ER=${u.engagementRate}, Earnings=$${u.earnings}`)
+//   .join('\n')}
 
-1) Provide a concise performance summary in 2–3 sentences.
-2) Provide three bullet-point recommendations to optimize future campaigns.
-`;
+// 1) Provide a concise performance summary in 2–3 sentences.
+// 2) Provide three bullet-point recommendations to optimize future campaigns.
+// `;
 
-    try {
-      const { text } = await generateText(prompt, {
-        model: 'gpt-3.5-turbo',
-        max_tokens: 256,
-        temperature: 0.6,
-      });
-      // Attempt to split summary vs. recommendations by newline
-      const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
-      // Assume first line(s) until a “1.” or “•” is summary
-      let splitIdx = lines.findIndex((l) => /^([0-9]+\.)|(^•)/.test(l));
-      if (splitIdx < 0) splitIdx = 2;
-      summaryText = lines.slice(0, splitIdx).join(' ');
-      recommendations = lines.slice(splitIdx).map((l) => l.replace(/^[0-9\.\-\s]+/, '').trim());
-    } catch (err) {
-      console.error('InsightsAgent GPT error:', err);
-      summaryText = `Campaign ${campaignId} had total spend $${totalSpend}, total engagements ${totalEngagements}, total views ${totalViews}.`;
-      recommendations = topPerformers.length
-        ? [`Focus more budget on ${topPerformers[0].creatorId}`]
-        : [];
-    }
-  } else {
-    // Stub summary
-    summaryText = `Campaign ${campaignId} had total spend $${totalSpend}, total engagements ${totalEngagements}, total views ${totalViews}.`;
-    recommendations = topPerformers.length
-      ? [`Focus more budget on ${topPerformers[0].creatorId}`]
-      : [];
-  }
+//     try {
+//       const { text } = await generateText(prompt, {
+//         model: 'gpt-3.5-turbo',
+//         max_tokens: 256,
+//         temperature: 0.6,
+//       });
+//       // Attempt to split summary vs. recommendations by newline
+//       const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+//       // Assume first line(s) until a “1.” or “•” is summary
+//       let splitIdx = lines.findIndex((l) => /^([0-9]+\.)|(^•)/.test(l));
+//       if (splitIdx < 0) splitIdx = 2;
+//       summaryText = lines.slice(0, splitIdx).join(' ');
+//       recommendations = lines.slice(splitIdx).map((l) => l.replace(/^[0-9\.\-\s]+/, '').trim());
+//     } catch (err) {
+//       console.error('InsightsAgent GPT error:', err);
+//       summaryText = `Campaign ${campaignId} had total spend $${totalSpend}, total engagements ${totalEngagements}, total views ${totalViews}.`;
+//       recommendations = topPerformers.length
+//         ? [`Focus more budget on ${topPerformers[0].creatorId}`]
+//         : [];
+//     }
+//   } else {
+//     // Stub summary
+//     summaryText = `Campaign ${campaignId} had total spend $${totalSpend}, total engagements ${totalEngagements}, total views ${totalViews}.`;
+//     recommendations = topPerformers.length
+//       ? [`Focus more budget on ${topPerformers[0].creatorId}`]
+//       : [];
+//   }
 
   // 6) Stub chart URLs
   const charts = {

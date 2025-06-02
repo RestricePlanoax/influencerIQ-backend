@@ -8,7 +8,7 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import config from '../config.js';
+//import config from '../config.js';
 import {
   createOutreachThreadStub,
   getOutreachHistoryStub,
@@ -50,29 +50,29 @@ router.post('/campaigns', async (req, res) => {
     let firstMessageContent = '';
     let status = 'stubbed';
 
-    if (config.useRealApis && config.openaiApiKey) {
-      try {
-        // Build a personalization prompt for GPT
-        const prompt = `
-You are a brand outreach agent. Write a personalized, friendly email inviting influencer ${creatorId} to collaborate on brand "${variables.brandName}" with a budget range of "${variables.budget}". 
-Use a one-paragraph tone. Sign off with the brand name.
-`;
-        const { text: gptContent } = await generateText(prompt, {
-          model: 'gpt-3.5-turbo',
-          max_tokens: 150,
-          temperature: 0.7,
-        });
-        firstMessageContent = gptContent;
-        status = 'delivered';
-      } catch (err) {
-        console.error('OutreachAgent GPT error:', err);
-        firstMessageContent = `Hello ${creatorId}, we'd love to partner with you on ${variables.brandName} (budget: ${variables.budget}).`;
-        status = 'stubbed';
-      }
-    } else {
-      // Stub content
-      firstMessageContent = `Hello ${creatorId}, [STUB] we'd love to partner with ${variables.brandName} (budget: ${variables.budget}).`;
-    }
+//     if (config.useRealApis && config.openaiApiKey) {
+//       try {
+//         // Build a personalization prompt for GPT
+//         const prompt = `
+// You are a brand outreach agent. Write a personalized, friendly email inviting influencer ${creatorId} to collaborate on brand "${variables.brandName}" with a budget range of "${variables.budget}". 
+// Use a one-paragraph tone. Sign off with the brand name.
+// `;
+//         const { text: gptContent } = await generateText(prompt, {
+//           model: 'gpt-3.5-turbo',
+//           max_tokens: 150,
+//           temperature: 0.7,
+//         });
+//         firstMessageContent = gptContent;
+//         status = 'delivered';
+//       } catch (err) {
+//         console.error('OutreachAgent GPT error:', err);
+//         firstMessageContent = `Hello ${creatorId}, we'd love to partner with you on ${variables.brandName} (budget: ${variables.budget}).`;
+//         status = 'stubbed';
+//       }
+//     } else {
+//       // Stub content
+//       firstMessageContent = `Hello ${creatorId}, [STUB] we'd love to partner with ${variables.brandName} (budget: ${variables.budget}).`;
+//     }
 
     const firstMessage = {
       messageId: uuidv4(),
